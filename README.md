@@ -47,11 +47,6 @@ Demonstrar visualmente em sala de aula como funciona a dispersão estatística d
 - [Node-RED](https://nodered.org/) (instalado global ou localmente)
 - Dashboard (ex.: `@flowfuse/node-red-dashboard` ou `node-red-dashboard`, dependendo da biblioteca gráfica utilizada no seu fluxo)
 
----
 
-## 📦 Como Instalar e Executar
 
-1. Clone o repositório:
-   ```bash
-   git clone [https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git](https://github.com/SEU-USUARIO/SEU-REPOSITORIO.git)
-   cd SEU-REPOSITORIO
+
