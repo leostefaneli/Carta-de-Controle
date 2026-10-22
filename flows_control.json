@@ -1,5 +1,13 @@
 [
     {
+        "id": "1424779d3b5549a9",
+        "type": "tab",
+        "label": "Controle Prod",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "800a6ce118901859",
         "type": "inject",
         "z": "1424779d3b5549a9",
@@ -26,5 +34,683 @@
                 "8533a51d20d36946"
             ]
         ]
+    },
+    {
+        "id": "e32e10661c6c3831",
+        "type": "debug",
+        "z": "1424779d3b5549a9",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 860,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "6576f5a53b95e68d",
+        "type": "function",
+        "z": "1424779d3b5549a9",
+        "name": "Dist. Normal",
+        "func": "const media = 25;\nconst desvioPadrao = 10;\n\nlet u1 = 0;\nlet u2 = 0;\nwhile(u1 === 0) u1 = Math.random(); \nu2 = Math.random();\nlet z = Math.sqrt(-2.0 * Math.log(u1)) * Math.cos(2.0 * Math.PI * u2);\n\nlet numeroNormal = media + z * desvioPadrao;\n\n//let numeroNormalround = Math.round(numeroNormal);\n\nlet numeroNormalround = Math.round(numeroNormal * 1000) / 1000;\n\n//let numeroNormalround = numeroNormal;\nmsg.payload = numeroNormalround;\nmsg.topic = \"Medição\"; \n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 400,
+        "wires": [
+            [
+                "877a6942be7e4b30",
+                "505cc02481055010",
+                "e32e10661c6c3831"
+            ]
+        ]
+    },
+    {
+        "id": "241f662d18b6e92f",
+        "type": "function",
+        "z": "1424779d3b5549a9",
+        "name": "Superior",
+        "func": "// --- Defina seus limites de controle aqui ---\nconst LIMITE_SUPERIOR = 45;\n\n\nvar msg_limite_sup = {\n    payload: LIMITE_SUPERIOR,\n    topic: \"Limite Superior\" // O nome da série\n};\n\n\n\n// Retorna as 3 mensagens de uma vez.\n// O gráfico receberá todas e desenhará 3 linhas.\nreturn [msg_limite_sup];",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 200,
+        "wires": [
+            [
+                "505cc02481055010"
+            ]
+        ]
+    },
+    {
+        "id": "fc804d48ec599b26",
+        "type": "function",
+        "z": "1424779d3b5549a9",
+        "name": "Inferior",
+        "func": "// --- Defina seus limites de controle aqui ---\nconst LIMITE_INFERIOR = 5;\n\n\nvar msg_limite_inf = {\n    payload: LIMITE_INFERIOR,\n    topic: \"Limite Inferior\" // O nome da série\n};\n\n\n\n// Retorna as 3 mensagens de uma vez.\n// O gráfico receberá todas e desenhará 3 linhas.\nreturn [msg_limite_inf ];",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 340,
+        "wires": [
+            [
+                "505cc02481055010"
+            ]
+        ]
+    },
+    {
+        "id": "877a6942be7e4b30",
+        "type": "ui-gauge",
+        "z": "1424779d3b5549a9",
+        "name": "Nível ",
+        "group": "49e52c6e54411ba6",
+        "order": 2,
+        "value": "payload",
+        "valueType": "msg",
+        "width": 3,
+        "height": "4",
+        "gtype": "gauge-34",
+        "gstyle": "needle",
+        "title": "",
+        "alwaysShowTitle": false,
+        "floatingTitlePosition": "top-left",
+        "units": "",
+        "icon": "",
+        "prefix": "",
+        "suffix": "",
+        "segments": [
+            {
+                "from": "0",
+                "color": "#df2020",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "10",
+                "color": "#ffc800",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "20",
+                "color": "#53ea64",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "30",
+                "color": "#ffc800",
+                "text": "",
+                "textType": "label"
+            },
+            {
+                "from": "40",
+                "color": "#e11e1e",
+                "text": "",
+                "textType": "label"
+            }
+        ],
+        "min": 0,
+        "max": "50",
+        "sizeThickness": "25",
+        "sizeGap": 4,
+        "sizeKeyThickness": 8,
+        "styleRounded": true,
+        "styleGlow": false,
+        "className": "",
+        "x": 510,
+        "y": 480,
+        "wires": [
+            [
+                "fe3deba4402cdeac"
+            ]
+        ]
+    },
+    {
+        "id": "505cc02481055010",
+        "type": "ui-chart",
+        "z": "1424779d3b5549a9",
+        "group": "cd03f642eb2f795e",
+        "name": "Série Temporal",
+        "label": "",
+        "order": 1,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisLabel": "",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "timestamp",
+        "xAxisType": "time",
+        "xAxisFormat": "",
+        "xAxisFormatType": "{HH}:{mm}:{ss}",
+        "xmin": "",
+        "xmax": "",
+        "yAxisLabel": "",
+        "yAxisProperty": "payload",
+        "yAxisPropertyType": "msg",
+        "ymin": "0",
+        "ymax": "50",
+        "bins": 10,
+        "action": "append",
+        "stackSeries": false,
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": false,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#0095ff",
+            "#ff0000",
+            "#ff7f0e",
+            "#2ca02c",
+            "#a347e1",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "textColor": [
+            "#666666"
+        ],
+        "textColorDefault": true,
+        "gridColor": [
+            "#e5e5e5"
+        ],
+        "gridColorDefault": true,
+        "width": "9",
+        "height": "5",
+        "className": "",
+        "interpolation": "linear",
+        "x": 660,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "23c28e1f6cfe6325",
+        "type": "ui-button",
+        "z": "1424779d3b5549a9",
+        "group": "49e52c6e54411ba6",
+        "name": "Clear Data",
+        "label": "Clear Data",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "emulateClick": false,
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "trash-can",
+        "iconPosition": "left",
+        "payload": "[]",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "buttonColor": "",
+        "textColor": "",
+        "iconColor": "",
+        "enableClick": true,
+        "enablePointerdown": false,
+        "pointerdownPayload": "",
+        "pointerdownPayloadType": "str",
+        "enablePointerup": false,
+        "pointerupPayload": "",
+        "pointerupPayloadType": "str",
+        "x": 630,
+        "y": 300,
+        "wires": [
+            [
+                "505cc02481055010",
+                "91a98e0e6673862e"
+            ]
+        ]
+    },
+    {
+        "id": "91a98e0e6673862e",
+        "type": "ui-table",
+        "z": "1424779d3b5549a9",
+        "group": "15123e36bf381ce2",
+        "name": "Tabela",
+        "label": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "maxrows": "5",
+        "passthru": false,
+        "autocols": true,
+        "showSearch": true,
+        "deselect": true,
+        "selectionType": "none",
+        "columns": [],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "append",
+        "className": "",
+        "x": 770,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fe3deba4402cdeac",
+        "type": "function",
+        "z": "1424779d3b5549a9",
+        "name": "function 4",
+        "func": "const LIMITE_SUP = 45\nconst LIMITE_INF = 10\nvar tipo_alerta = null;\nvar saida_tabela = null; \n\n\nif (msg.payload > LIMITE_SUP) {\n    tipo_alerta = \"Limite Alto\";\n} else if (msg.payload < LIMITE_INF) {\n    tipo_alerta = \"Limite Baixo\";\n}\n\nif (tipo_alerta !== null) {\n    var now = new Date();\n    // Formata a data para pt-BR\n    var timestamp = now.toLocaleString('pt-BR', { \n        dateStyle: 'short', \n        timeStyle: 'medium' \n    });\n\n    var linha_tabela = {\n        \"DataHora\": timestamp,\n        \"Valor\": msg.payload,\n        \"Alerta\": tipo_alerta\n    };\n    \n    // Colocamos o objeto no payload da mensagem de saída\n    saida_tabela = { payload: linha_tabela };\n}\n\n\nreturn saida_tabela;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 380,
+        "wires": [
+            [
+                "91a98e0e6673862e"
+            ]
+        ]
+    },
+    {
+        "id": "0b6a8896553cf6f2",
+        "type": "ui-form",
+        "z": "1424779d3b5549a9",
+        "name": "5W2H",
+        "group": "d87b4758aa4ce612",
+        "label": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Quem?",
+                "key": "Quem?",
+                "type": "text",
+                "required": false,
+                "rows": null
+            },
+            {
+                "label": "Como?",
+                "key": "Como?",
+                "type": "text",
+                "required": false,
+                "rows": null
+            },
+            {
+                "label": "Quando?",
+                "key": "Quando?",
+                "type": "text",
+                "required": false,
+                "rows": null
+            },
+            {
+                "label": "Quanto?",
+                "key": "Quanto?",
+                "type": "text",
+                "required": false,
+                "rows": null
+            },
+            {
+                "label": "Onde?",
+                "key": "Onde?",
+                "type": "text",
+                "required": false,
+                "rows": null
+            },
+            {
+                "label": "Por quê?",
+                "key": "Por quê?",
+                "type": "text",
+                "required": false,
+                "rows": null
+            },
+            {
+                "label": "O quê?",
+                "key": "O quê?",
+                "type": "text",
+                "required": false,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Quem?": "",
+            "Como?": "",
+            "Quando?": "",
+            "Quanto?": "",
+            "Onde?": "",
+            "Por quê?": "",
+            "O quê?": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "clear",
+        "resetOnSubmit": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": "",
+        "className": "",
+        "passthru": false,
+        "dropdownOptions": [],
+        "x": 270,
+        "y": 700,
+        "wires": [
+            [
+                "69a3d179f6b81946"
+            ]
+        ]
+    },
+    {
+        "id": "69a3d179f6b81946",
+        "type": "function",
+        "z": "1424779d3b5549a9",
+        "name": "to array",
+        "func": "\nmsg.payload = [ msg.payload ];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 680,
+        "wires": [
+            [
+                "b05f426ce56214f7"
+            ]
+        ]
+    },
+    {
+        "id": "b05f426ce56214f7",
+        "type": "ui-table",
+        "z": "1424779d3b5549a9",
+        "group": "1cf3e538171cc614",
+        "name": "",
+        "label": "",
+        "order": 2,
+        "width": "6",
+        "height": "1",
+        "maxrows": "5",
+        "passthru": false,
+        "autocols": true,
+        "showSearch": true,
+        "deselect": true,
+        "selectionType": "none",
+        "columns": [],
+        "mobileBreakpoint": "sm",
+        "mobileBreakpointType": "defaults",
+        "action": "append",
+        "className": "",
+        "x": 610,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f0eb2fa8f59fee13",
+        "type": "ui-button",
+        "z": "1424779d3b5549a9",
+        "group": "1cf3e538171cc614",
+        "name": "",
+        "label": "Limpar",
+        "order": 1,
+        "width": "2",
+        "height": "1",
+        "emulateClick": false,
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "trash-can",
+        "iconPosition": "left",
+        "payload": "[]",
+        "payloadType": "json",
+        "topic": "topic",
+        "topicType": "msg",
+        "buttonColor": "",
+        "textColor": "",
+        "iconColor": "",
+        "enableClick": true,
+        "enablePointerdown": false,
+        "pointerdownPayload": "",
+        "pointerdownPayloadType": "str",
+        "enablePointerup": false,
+        "pointerupPayload": "",
+        "pointerupPayloadType": "str",
+        "x": 390,
+        "y": 800,
+        "wires": [
+            [
+                "b05f426ce56214f7"
+            ]
+        ]
+    },
+    {
+        "id": "8533a51d20d36946",
+        "type": "function",
+        "z": "1424779d3b5549a9",
+        "name": "LC",
+        "func": "// --- Defina seus limites de controle aqui ---\nconst LINHA_CENTRAL = 25;\n\n\nvar msg_limite_central = {\n    payload: LINHA_CENTRAL,\n    topic: \"Linha Central\" // O nome da série\n};\n\n\n\n// Retorna as 3 mensagens de uma vez.\n// O gráfico receberá todas e desenhará 3 linhas.\nreturn [msg_limite_central];",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 280,
+        "wires": [
+            [
+                "505cc02481055010"
+            ]
+        ]
+    },
+    {
+        "id": "49e52c6e54411ba6",
+        "type": "ui-group",
+        "name": "Nível",
+        "page": "223c6d8f5e00e52f",
+        "width": "3",
+        "height": "3",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "cd03f642eb2f795e",
+        "type": "ui-group",
+        "name": "Série Temporal",
+        "page": "223c6d8f5e00e52f",
+        "width": "9",
+        "height": "5",
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "15123e36bf381ce2",
+        "type": "ui-group",
+        "name": "Dados",
+        "page": "223c6d8f5e00e52f",
+        "width": "12",
+        "height": "4",
+        "order": 3,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "d87b4758aa4ce612",
+        "type": "ui-group",
+        "name": "5W2H",
+        "page": "8ee75d204eced20d",
+        "width": "6",
+        "height": "1",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "1cf3e538171cc614",
+        "type": "ui-group",
+        "name": "Quadro 5W2H",
+        "page": "8ee75d204eced20d",
+        "width": "6",
+        "height": "6",
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default"
+    },
+    {
+        "id": "223c6d8f5e00e52f",
+        "type": "ui-page",
+        "name": "Controle Dashboard ",
+        "ui": "596a4b56d9b49b7d",
+        "path": "/page1",
+        "icon": "gauge",
+        "layout": "grid",
+        "theme": "5e2c053cffe56a3e",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "8ee75d204eced20d",
+        "type": "ui-page",
+        "name": "5W2H",
+        "ui": "596a4b56d9b49b7d",
+        "path": "/page2",
+        "icon": "check",
+        "layout": "grid",
+        "theme": "5e2c053cffe56a3e",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": "0",
+                "cols": "3"
+            },
+            {
+                "name": "Tablet",
+                "px": "576",
+                "cols": "6"
+            },
+            {
+                "name": "Small Desktop",
+                "px": "768",
+                "cols": "9"
+            },
+            {
+                "name": "Desktop",
+                "px": "1024",
+                "cols": "12"
+            }
+        ],
+        "order": 2,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "596a4b56d9b49b7d",
+        "type": "ui-base",
+        "name": "My Dashboard",
+        "path": "/dashboard",
+        "appIcon": "",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false,
+        "headerContent": "page",
+        "navigationStyle": "default",
+        "titleBarStyle": "default",
+        "showReconnectNotification": true,
+        "notificationDisplayTime": "1",
+        "showDisconnectNotification": true,
+        "allowInstall": false
+    },
+    {
+        "id": "5e2c053cffe56a3e",
+        "type": "ui-theme",
+        "name": "Default Theme",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094CE",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "density": "default",
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "d73f6b55d55702e6",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "@flowfuse/node-red-dashboard": "1.29.0"
+        }
     }
 ]
