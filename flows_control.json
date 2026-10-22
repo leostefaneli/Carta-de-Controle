@@ -1,0 +1,30 @@
+[
+    {
+        "id": "800a6ce118901859",
+        "type": "inject",
+        "z": "1424779d3b5549a9",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "iso",
+        "payloadType": "date",
+        "x": 160,
+        "y": 280,
+        "wires": [
+            [
+                "6576f5a53b95e68d",
+                "241f662d18b6e92f",
+                "fc804d48ec599b26",
+                "8533a51d20d36946"
+            ]
+        ]
+    }
+]
