@@ -1,6 +1,7 @@
 # Simulador de Controle Estatístico de Processo (CEP) — Node-RED
 
 Aplicação interativa desenvolvida em **Node-RED** voltada para o ensino de **Controle e Gestão da Produção**. O fluxo simula o monitoramento contínuo de uma variável de processo industrial em tempo real, gerando dados aleatórios a partir de uma **Distribuição Normal** e aplicando regras de controle de qualidade estatístico.
+<img width="1892" height="830" alt="Captura de tela 2026-10-22 104108" src="https://github.com/user-attachments/assets/2617f2f7-f7cb-4333-b72d-28720185b7ab" />
 
 ---
 
